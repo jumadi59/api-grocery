@@ -1,0 +1,242 @@
+{
+    "bca": [{
+            "display_name": "Petunjuk Transfer ATM",
+            "instruction": [
+                "Pada menu utama, pilih Transaksi Lainnya.",
+                "Pilih Transfer.",
+                "Pilih Ke Rek BCA Virtual Account.",
+                "Masukkan Nomor Rekening pembayaran (11 digit) Anda lalu tekan Benar.",
+                "Masukkan jumlah tagihan yang akan anda bayar.",
+                "Pada halaman konfirmasi transfer akan muncul detail pembayaran Anda. Jika informasi telah sesuai tekan Ya."
+            ]
+        }, {
+            "display_name": "Petunjuk Transfer iBanking",
+            "instruction": [
+                "Pilih menu Transfer Dana.",
+                "Pilih Transfer ke BCA Virtual Account.",
+                "Masukkan nomor BCA Virtual Account, atau pilih Dari Daftar Transfer.",
+                "Jumlah yang akan ditransfer, nomor rekening dan nama merchant akan muncul di halaman konfirmasi pembayaran, jika informasi benar klik Lanjutkan.",
+                "Ambil BCA Token Anda dan masukkan KEYBCA Response APPLI 1 dan Klik Submit.",
+                "Transaksi Anda selesai."
+            ]
+        }, {
+            "display_name": "Petunjuk Transfer mBanking",
+            "instruction": [
+                "Lakukan log in pada aplikasi BCA Mobile.",
+                "Pilih menu m-BCA, kemudian masukkan kode akses m-BCA.",
+                "Pilih m-Transfer > BCA Virtual Account.",
+                "Pilih dari Daftar Transfer, atau masukkan Nomor Virtual Account tujuan.",
+                "Masukkan jumlah yang ingin dibayarkan.",
+                "Masukkan pin m-BCA.",
+                "Pembayaran selesai. Simpan notifikasi yang muncul sebagai bukti pembayaran."
+            ]
+        }
+    ],
+    "bni": [{
+            "display_name": "Petunjuk Transfer ATM",
+            "instruction": [
+                "Pada menu utama, pilih Menu Lainnya.",
+                "Pilih Transfer.",
+                "Pilih Rekening Tabungan.",
+                "Pilih Ke Rekening BNI.",
+                "Masukkan nomor virtual account dan pilih Tekan Jika Benar.",
+                "Masukkan jumlah tagihan yang akan anda bayar secara lengkap. Pembayaran dengan jumlah tidak sesuai akan otomatis ditolak.",
+                "Jumlah yang dibayarkan, nomor rekening dan nama Merchant akan ditampilkan. Jika informasi telah sesuai, tekan Ya.",
+                "Transaksi Anda sudah selesai."
+            ]
+        },{
+            "display_name": "Petunjuk Transfer iBanking",
+            "instruction": [
+                "Ketik alamat https://ibank.bni.co.id kemudian klik Masuk.",
+                "Silakan masukkan User ID dan Password.",
+                "Klik menu Transfer kemudian pilih Tambah Rekening Favorit.",
+                "Masukkan nama, nomor rekening, dan email, lalu klik Lanjut.",
+                "Masukkan Kode Otentikasi dari token Anda dan klik Lanjut.",
+                "Kembali ke menu utama dan pilih Transfer lalu Transfer Antar Rekening BNI.",
+                "Pilih rekening yang telah Anda favoritkan sebelumnya di Rekening Tujuan lalu lanjutkan pengisian, dan tekan Lanjut.",
+                "Pastikan detail transaksi Anda benar, lalu masukkan Kode Otentikasi dan tekan Lanjut."
+            ]
+        },{
+            "display_name": "Petunjuk Transfer mBanking",
+            "instruction": [
+                "Buka aplikasi BNI Mobile Banking dan login.",
+                "Pilih menu Transfer.",
+                "Pilih menu Virtual Account Billing.",
+                "Pilih rekening debit yang akan digunakan.",
+                "Pilih menu Input Baru dan masukkan 16 digit nomor Virtual Account",
+                "Informasi tagihan akan muncul pada halaman validasi.",
+                "Jika informasi telah sesuai, masukkan Password Transaksi dan klik Lanjut.",
+                "Transaksi Anda akan diproses"
+            ]
+        }
+    ],
+    "bri": [{
+            "display_name": "Petunjuk Transfer ATM",
+            "instruction": [
+                "Pilih menu utama, pilih Transaksi Lain.",
+                "Pilih Pembayaran.",
+                "Pilih Lainnya.",
+                "Pilih BRIVA.",
+                "Masukkan Nomor BRIVA pelanggan dan pilih Benar.",
+                "Jumlah pembayaran, nomor BRIVA dan nama merchant akan muncul pada halaman konfirmasi pembayaran. Jika informasi yang dicantumkan benar, pilih Ya.",
+                "Pembayaran telah selesai. Simpan bukti pembayaran Anda."
+            ]
+        },{
+            "display_name": "Petunjuk Transfer iBanking",
+            "instruction": [
+                "Masuk pada Internet Banking BRI.",
+                "Pilih menu Pembayaran & Pembelian.",
+                "Pilih sub menu BRIVA.",
+                "Masukkan Nomor BRIVA.",
+                "Jumlah pembayaran, nomor pembayaran, dan nama merchant akan muncul pada halaman konfirmasi pembayaran. Jika informasi yang dicantumkan benar, pilih Kirim.",
+                "Masukkan password dan mToken, pilih Kirim.",
+                "Pembayaran telah selesai. Untuk mencetak bukti transaksi, pilih Cetak."
+            ]
+        },{
+            "display_name": "Petunjuk Transfer mBanking",
+            "instruction": [
+                "Masuk ke dalam aplikasi BRI Mobile, pilih Mobile Banking BRI.",
+                "Pilih Pembayaran, lalu pilih BRIVA.",
+                "Masukkan nomor BRIVA.",
+                "Jumlah pembayaran, nomor pembayaran, dan nama merchant akan muncul pada halaman konfirmasi pembayaran. Jika informasi yang dicantumkan benar, pilih Continue.",
+                "Masukkan Mobile Banking BRI PIN, pilih Ok..",
+                "Pembayaran telah selesai. Simpan notifikasi sebagai bukti pembayaran."
+            ]
+        }
+    ],
+    "echannel": [{
+            "display_name": "Petunjuk Transfer ATM",
+            "instruction": [
+                "Pada menu utama, pilih Bayar/Beli.",
+                "Pilih Lainnya.",
+                "Pilih Multi Payment.",
+                "Masukkan 70012 (kode perusahaan Midtrans) lalu tekan Benar.",
+                "Masukkan Kode Pembayaran Anda lalu tekan Benar.",
+                "Pada halaman konfirmasi akan muncul detail pembayaran Anda. Jika informasi telah sesuai tekan Ya."
+            ]
+        },{
+            "display_name": "Petunjuk Transfer iBanking",
+            "instruction": [
+                "Login ke Internet Banking Mandiri (https://ibank.bankmandiri.co.id/).",
+                "Pada menu utama, pilih Bayar, lalu pilih Multi Payment.",
+                "Pilih akun Anda di Dari Rekening, kemudian di Penyedia Jasa pilih Midtrans.",
+                "Masukkan Kode Pembayaran Anda dan klik Lanjutkan.",
+                "Konfirmasi pembayaran Anda menggunakan Mandiri Token."
+            ]
+        }
+    ],
+    "permata": [{
+        "display_name": "Petunjuk Transfer ATM",
+        "instruction": [
+            "Pada menu utama, pilih Transaksi Lainnya.",
+            "Pilih Pembayaran.",
+            "Pilih Pembayaran Lainnya.",
+            "Pilih Virtual Account.",
+            "Masukkan 16 digit No. Virtual Account yang dituju, lalu tekan Benar.",
+            "Pada halaman konfirmasi transfer akan muncul jumlah yang dibayarkan, nomor rekening, & nama Merchant. Jika informasi telah sesuai tekan Benar.",
+            "Pilih rekening pembayaran Anda dan tekan Benar."
+        ]
+    }],
+    "other": [{
+            "display_name": "Petunjuk Transfer ATM Prima",
+            "instruction": [
+                "Pada menu utama, pilih Transaksi Lainnya.",
+                "Pilih Transfer.",
+                "Pilih Rek Bank Lain.",
+                "Masukkan nomor 009 (kode Bank BNI) lalu tekan Benar.",
+                "Masukkan jumlah tagihan yang akan Anda bayar secara lengkap, pembayaran dengan jumlah tidak sesuai akan otomatis ditolak.",
+                "Masukkan 16 digit No. Rekening pembayaran lalu tekan Benar.",
+                "Pada halaman konfirmasi transfer akan muncul jumlah yang dibayarkan, nomor rekening & nama Merchant. Jika informasi telah sesuai tekan Benar."
+            ]
+        },{
+            "display_name": "Petunjuk Transfer ATM Bersama",
+            "instruction": [
+                "Pada menu utama, pilih Transaksi Lainnya.",
+                "Pilih Transfer.",
+                "Pilih Antar Bank Online.",
+                "Masukkan 009 (kode Bank BNI) dan 16 digit No. Rekening.",
+                "Masukkan jumlah tagihan yang akan Anda bayar secara lengkap, Pembayaran dengan jumlah tidak sesuai akan otomatis ditolak.",
+                "Kosongkan No. Referensi, lalu tekan Benar.",
+                "Pada halaman konfirmasi transfer akan muncul jumlah yang dibayarkan, nomor rekening & nama Merchant. Jika informasi telah sesuai tekan Benar."
+            ]
+        },{
+            "display_name": "Petunjuk Transfer ATM Alto",
+            "instruction": [
+                "Pada menu utama, pilih Transaksi Lainnya.",
+                "Pilih Transfer.",
+                "Pilih Rek Bank Lain.",
+                "Masukkan nomor 009 (kode Bank BNI) lalu tekan Benar.",
+                "Masukkan jumlah tagihan yang akan Anda bayar secara lengkap, pembayaran dengan jumlah tidak sesuai akan otomatis ditolak.",
+                "Masukkan 16 digit No. Rekening pembayaran lalu tekan Benar.",
+                "Pada halaman konfirmasi transfer akan muncul jumlah yang dibayarkan, nomor rekening & nama Merchant. Jika informasi telah sesuai tekan Benar."
+            ]
+        }
+    ],
+    "gopay": [{
+        "display_name": "Petunjuk Bayar Dari Gopay",
+        "instruction": [
+            "Buka aplikasi Gojek atau e-wallet lain Anda.",
+            "Pindai kode QR yang ada pada monitor Anda.",
+            "Periksa detail transaksi Anda pada aplikasi, lalu tap tombol Bayar.",
+            "Masukkan PIN Anda.",
+            "Transaksi Anda telah selesai."
+        ]
+    }],
+    "alfamart": [{
+        "display_name": "Petunjuk Bayar Dari Alfamart",
+        "instruction": [
+            "Silakan pergi ke gerai Alfamart, Alfamidi, or Dan+Dan terdekat dan berikanlah nomorKode Pembayaran Anda ke kasir.",
+            "Kasir akan mengkonfirmasi transaksi dengan menanyakan jumlah transaksi dan nama merchant.",
+            "Konfirmasikan pembayaran Anda ke kasir.",
+            "Transaksi Anda berhasil! Anda akan mendapatkan email konfirmasi pembayaran dan simpanlah struk transaksi Anda."
+        ]
+    }],
+    "indomaret": [{
+        "display_name": "Petunjuk Bayar Dari Indomaret",
+        "instruction": [
+            "Setelah melakukan konfirmasi pembayaran, Anda akan diberikan Kode Pembayaran yang unik.",
+            "Salinlah Kode Pembayaran Anda dan jumlah pembayaran yang akan dibayarkan. Jangan Khawatir, Kami juga akan mengirimkan salinan Kode Pembayaran dan Instruksi Pembayaran melalui email kepada Anda.",
+            "Pergi ke toko Indomaret terdekat dan berikanlah nomor Kode Pembayaran Anda ke kasir.",
+            "Kasir Indomaret akan mengkonfirmasi transaksi dengan menanyakan jumlah pembayaran dan nama merchant.",
+            "Konfirmasikan pembayaran Anda ke kasir.",
+            "Transaksi Anda berhasil! Anda akan mendapatkan email konfirmasi pembayaran dan Simpanlah struk transaksi Indomaret Anda."
+        ]
+    }],
+    "akulaku": [{
+        "display_name": "Petunjuk Bayar Dari Aplikasi Akulaku",
+        "instruction": [
+            "Tekan tombol \"Bayar Sekarang\", lalu Anda akan diarahkan ke halaman Pusat Pembayaran Akulaku.",
+            "Pilih tenor cicilan yang diinginkan, lalu Login ke akun Akulaku Anda dengan memasukkan nomor ponsel dan password.",
+            "Masukkan kode verifikasi (OTP) yang telah dikirimkan ke ponsel Anda, lalu klik tombol \"Selanjutnya\".",
+            "Akan tampil halaman konfirmasi, lalu Anda dapat menyelesaikan transaksi."
+        ]
+    }],
+    "danamon_online": [{
+        "display_name": "Petunjuk Transfer Danamon Online",
+        "instruction": [
+            "Masukkan User ID dan Password Danamon Online Banking Anda dan pilih sumber rekening untuk pembayaran Anda.",
+            "Cek rincian informasi transaksi Anda, masukkan Kode Token, lalu tekan lanjut.",
+            "Konfirmasi transaksi pembayaran akan muncul, pembayaran selesai. Simpan informasi referensi merchant dan referensi pembayaran, tekan Lanjut untuk kembali ke situs merchant."
+        ]
+    }],
+    "cimb_clicks": [{
+        "display_name": "Petunjuk Transfer OCTO Clicks",
+        "instruction": [
+            "Pastikan Anda telah memiiki User ID OCTO Clicks dan sudah mendaftarkan mPIN sebelum melakukan pembayaran melalui OCTO Clicks ini.",
+            "Pembayaran melalui OCTO Clicks akan diproses secara online, saldo rekening CIMB Anda akan didebet secara otomatis sesuai jumlah pembelanjaan Anda.",
+            "Transaksi Anda akan dibatalkan jika pembayaran tidak diselesaikan dalam 2 jam.",
+            "Pastikan tidak ada pop up blocker yang aktif pada browser Anda."
+        ]
+    }],
+    "bca_klikpay": [{
+        "display_name": "Petunjuk Transfer BCA KlikPay",
+        "instruction": [
+            "Setelah Anda menekan tombol \"Bayar Sekarang\", Anda akan diarahkan ke halaman pembayaran BCA KlikPay.",
+            "Setelah Login ke Akun BCA Klikpay Anda dengan memasukkan alamat email dan password, maka akan tampil informasi data transaksi seperti nama merchant, waktu transaksi, dan jumlah yang harus dibayar. Pilihlah jenis pembayaran KlikBCA atau BCA Card untuk transaksi tersebut.",
+            "Untuk otorisasi pembayaran dengan BCA KlikPay, tekan tombol \"kirim OTP\", dan Anda akan menerima kode OTP (One Time Password) yang dikirim melalui SMS ke handphone Anda. Masukkan kode OTP tersebut pada kolom yang tersedia.",
+            "Apabila kode OTP yang Anda masukkan benar, transaksi pembayaran akan langsung diproses dan saldo rekening Anda (untuk jenis pembayaran KlikBCA) atau limit BCA Card Anda (untuk jenis pembayaran BCA Card) akan berkurang sejumlah nilai transaksi.",
+            "Status keberhasilan transaksi Anda akan tampil pada layar transaksi dan Anda akan menerima email notifikasi.",
+            "Informasi lebih lanjut tentang BCA KlikPay dapat hubungi Halo BCA di 1500888 atau kunjungi http://klikbca.com/KlikPay/klikpay.html"
+        ]
+    }]
+}
