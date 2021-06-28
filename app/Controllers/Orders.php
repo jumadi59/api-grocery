@@ -41,10 +41,8 @@ class Orders extends BaseResourceController
         $order = $this->model->order($id);
         if ($order) {
             $orderItems = new OrderItems();
-            $trakings   = new Trackings();
             $items      = $orderItems->order_items($order->id);
             $order->order_items = $items;
-            $order->trackings   = $trakings->trackings($order->id);
         } else {
             return $this->failNotFound('No Data Found with id ' . $id);
         }
@@ -197,7 +195,8 @@ class Orders extends BaseResourceController
         if ($send == 'all' || $send == 'user') {
             $data = array(
                 'title'     => 'Transaction expired',
-                'message'   => "Order using "
+                'message'   => "Order using ",
+                'flag'      => 2
             );
 
             $notification->sendEmail($transaction->user, $data);
@@ -206,7 +205,8 @@ class Orders extends BaseResourceController
         if ($send == 'all' || $send == 'store') {
             $data = array(
                 'title'     => 'Transaction expired',
-                'message'   => "Order using "
+                'message'   => "Order using ",
+                'flag'      => 2
             );
 
             $notification->sendEmail($transaction->user, $data);
