@@ -283,7 +283,8 @@ class Midtrans
                 $data['biller_code']        = $response->biller_code;
                 break;
             case 'gopay':
-                $data['actions']            = $response->actions;
+                $data['qr_code_url']          = $response->actions[0]->url;
+                $data['deep_link']            = $response->actions[1]->url;
                 break;
             case 'cstore':
                 $data['store']              = $response->store;
