@@ -195,15 +195,10 @@ class Midtrans
             'customer_details'      => $data['customer_details'],
             'custom_expiry'         => $data['custom_expiry'],
             $data['payment']->code  => array(
-                'enable_callback'   => false,
+                'enable_callback'   => true,
                 'callback_url'      => 'someapps://callback'
             )
         );
-        if ($data['payment']->code = 'qris') {
-            $params['payment']->code  = array(
-                'acquirer'   => 'gopay',
-            );
-        }
         try {
             $response = CoreApi::charge($params);
         } catch (Exception $e) {
@@ -283,6 +278,7 @@ class Midtrans
                 $data['biller_code']        = $response->biller_code;
                 break;
             case 'gopay':
+                $data['type']                 = $response->payment_type;
                 $data['qr_code_url']          = $response->actions[0]->url;
                 $data['deep_link']            = $response->actions[1]->url;
                 break;

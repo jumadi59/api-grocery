@@ -143,7 +143,7 @@ class Notifications extends BaseResourceController
         $notif['title']         = $data['title'];
         $notif['message']       = $data['message'];
         $notif['is_background'] = false;
-        $notif['flag']          = 2;
+        $notif['flag']          = $data['flag'];
         $notif['timestamp'] =  (isset($data['timestamp']) && !empty($data['timestamp'])) ? $data['timestamp'] : time();
         if (isset($data['image']) && !empty($data['image'])):       $notif['image'] = $data['image']; endif;
         if (isset($data['action']) && !empty($data['action'])):     $notif['action'] = $data['action']; endif;
@@ -175,6 +175,11 @@ class Notifications extends BaseResourceController
                 'message' => 'Email tidak berhasil dikirim',
             ];
         }
+    }
+
+    function testNotification()
+    {
+        # code...
     }
 
 }

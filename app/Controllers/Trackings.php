@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseResourceController;
 use App\Entities\Order;
+use App\Models\Orders;
 
 class Trackings extends BaseResourceController
 {
@@ -13,9 +14,14 @@ class Trackings extends BaseResourceController
 
     public function index($orderId = null)
     {
+        
+        $orderModel = new Orders();
+        $order = $orderModel->order($orderId);
         $data = $this->model->trackings($orderId);
-        if (count($data) > 0) {
-            return $this->respond($data);
+        if ($order) {
+            $order->trackings = array_merge($this->trackings($order), $data);
+            unset_all($order, ["expired_at", "courier"]);
+            return $this->respond($order);
         } else {
             return $this->respondNoContent("Empty data");
         }
@@ -74,21 +80,39 @@ class Trackings extends BaseResourceController
         }
     }
 
-    private function trakings(Order $order)
+    private function trackings(Order $order)
     {
-        $trakings = [];
+        $trackings = [];
+        if (isset($order->transaction->created_at)) {
+            $trackings[] = [
+                'name'          => 'System Tracker',
+                'description'   => 'Membuat pesanan',
+                'status'        => true,
+                'created_at'    => get_object_vars($order->transaction->created_at)
+            ];
+        }
+        
+        if (isset($order->transaction->payment_at)) {
+            $trackings[] = [
+                'name'          => 'System Tracker',
+                'description'   => 'Melakukan pembayaran',
+                'status'        => true,
+                'created_at'    => get_object_vars($order->transaction->payment_at)
+            ];
+        }
 
-        $trakings[] = new \App\Entities\Tracking([
-            'name'          => '',
-            'description'   => '',
-            'status'        => isset($order->transaction->payment_at),
-            'created_at'    => $order->transaction->payment_at
-        ]);
-        $trakings[] = new \App\Entities\Tracking([
-            'name'          => '',
-            'description'   => '',
-            'status'        => isset($order->sent_at),
-            'created_at'    => $order->sent_at
-        ]);
+        if (isset($order->transaction->sent_at)) {
+            $trackings[] = [
+                'name'          => 'System Tracker',
+                'description'   => 'Pesanan telah dikirim',
+                'status'        => true,
+                'created_at'    => get_object_vars($order->transaction->sent_at)
+            ];
+        }
+
+        unset($order->transaction->payment_at);
+        unset($order->transaction->sent_at);
+        unset($order->transaction->expired_at);
+        return $trackings;
     }
 }

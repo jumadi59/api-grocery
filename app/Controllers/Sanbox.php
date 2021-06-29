@@ -77,4 +77,10 @@ class Sanbox extends BaseResourceController
         }
         return $this->respond(['update size' => count($updates)]);
     }
+
+    function all()
+    {
+        $this->index();
+        $this->updateFlashSale();
+    }
 }

@@ -1,4 +1,6 @@
-<?php namespace App\Libraries;
+<?php
+
+namespace App\Libraries;
 
 use App\Models\Discounts;
 use App\Models\OrderItems;
@@ -22,7 +24,7 @@ class NotifyMessageHandler
 
     public function __construct($data)
     {
-        
+
         $this->transcationModel = new Transactions();
         $this->orderModel = new Orders();
         $this->trakingModel = new Trackings();
@@ -33,6 +35,8 @@ class NotifyMessageHandler
             return $this;
         }
 
+        $this->data['user']['flag'] = 2;
+        $this->data['store']['flag'] = 2;
         switch ($this->notif->transaction_status) {
             case 'settlement':
                 $this->data = $this->settlement();
@@ -58,7 +62,7 @@ class NotifyMessageHandler
         }
     }
 
-    
+
     public function capture()
     {
         $fraud = $this->fraud_status;
@@ -79,28 +83,30 @@ class NotifyMessageHandler
                 $datetime->modify('+1 day');
                 $this->orderModel->updateFromTransaction(
                     $this->transaction_id,
-                    ['expired_at' => $datetime->toDateTimeString(), 
-                    'status' => 'confirmation']
+                    [
+                        'expired_at' => $datetime->toDateTimeString(),
+                        'status' => 'confirmation'
+                    ]
                 );
                 $this->updateProduct();
 
                 $data['user'] = array(
                     'title' => lang('App.transaction.title_settlement', [
-                        'bank_name' => $this->transcation->payment->name, 
+                        'bank_name' => $this->transcation->payment->name,
                         'date' => date('d F Y')
-                        ]),
+                    ]),
                     'message' => lang('App.transaction.msg_settlement'),
-            'action' => 'transaction',
-            'payload' => [
-                'id' => $this->transaction_id,
-                'status' => 'settlement'
-                ]
+                    'action' => 'transaction',
+                    'payload' => [
+                        'id' => $this->transaction_id,
+                        'status' => 'settlement'
+                    ]
                 );
                 $data['store'] = array(
                     'title' => 'Ada pesanan baru',
                     'message' => "Pesanan ini telah melakukan pembayaran silahkan di prosses"
                 );
-        
+
                 return $data;
             }
         }
@@ -110,28 +116,32 @@ class NotifyMessageHandler
     {
         $this->transcationModel->update(
             $this->transaction_id,
-            ['payment_at' => date('Y-m-d H:i:s'), 
-            'status' => $this->notif->transaction_status]
+            [
+                'payment_at' => date('Y-m-d H:i:s'),
+                'status' => $this->notif->transaction_status
+            ]
         );
         $datetime = new Time();
         $datetime->modify('+1 day');
         $this->orderModel->updateFromTransaction(
             $this->transaction_id,
-            ['expired_at' => $datetime->toDateTimeString(), 
-            'status' => 'confirmation']
+            [
+                'expired_at' => $datetime->toDateTimeString(),
+                'status' => 'confirmation'
+            ]
         );
-        
+
         $data['user'] = array(
             'title' => lang('App.transaction.title_settlement', [
-                'bank_name' => $this->transcation->payment->name, 
+                'bank_name' => $this->transcation->payment->name,
                 'date' => date('d F Y')
-                ]),
+            ]),
             'message' => lang('App.transaction.msg_settlement'),
             'action' => 'transaction',
             'payload' => [
                 'id' => $this->transaction_id,
                 'status' => 'settlement'
-                ]
+            ]
         );
         $data['store'] = array(
             'title' => 'Ada pesanan baru',
@@ -156,7 +166,7 @@ class NotifyMessageHandler
             'payload' => [
                 'id' => $this->transaction_id,
                 'status' => 'pending'
-                ]
+            ]
         );
         return $data;
     }
@@ -175,7 +185,7 @@ class NotifyMessageHandler
             'payload' => [
                 'id' => $this->transaction_id,
                 'status' => 'cancel'
-                ]
+            ]
         );
         return $data;
     }
@@ -193,7 +203,7 @@ class NotifyMessageHandler
             'payload' => [
                 'id' => $this->transaction_id,
                 'status' => 'deny'
-                ]
+            ]
         );
         return $data;
     }
@@ -211,12 +221,13 @@ class NotifyMessageHandler
             'payload' => [
                 'id' => $this->transaction_id,
                 'status' => 'expire'
-                ]
+            ]
         );
         return $data;
     }
 
-    public function updateProduct() {
+    public function updateProduct()
+    {
         $orderItemModel = new OrderItems();
         $productModel = new Products();
         $discountModel = new Discounts();
@@ -229,23 +240,24 @@ class NotifyMessageHandler
             foreach ($items as $v) {
                 $product = $productModel->product($v->product->id);
                 if ($product) {
-                    $this->storeUserIds[] =$product->store->user->id;
+                    $this->storeUserIds[] = $product->store->user->id;
                     array_push($updateProducts, [
-                        'id' => $product->id, 
-                        'stock' => ($product->stock - $v->quantity), 
+                        'id' => $product->id,
+                        'stock' => ($product->stock - $v->quantity),
                         'sold' => ($product->sold + $v->quantity)
                     ]);
-                    
+
                     $discount = $discountModel->discountTarget(
-                        isset($v->variant_id) ? 'variant' : 'product', 
-                        isset($v->variant_id) ? $v->variant_id : $v->product->id);
-                        if ($discount) {
-                            array_push($updateDiscounts, [
-                                'id' => $discount->id, 
-                                'stock' => ($discount->stock - $v->quantity), 
-                                'sold' => ($discount->sold + $v->quantity)
-                            ]);
-                        }
+                        isset($v->variant_id) ? 'variant' : 'product',
+                        isset($v->variant_id) ? $v->variant_id : $v->product->id
+                    );
+                    if ($discount) {
+                        array_push($updateDiscounts, [
+                            'id' => $discount->id,
+                            'stock' => ($discount->stock - $v->quantity),
+                            'sold' => ($discount->sold + $v->quantity)
+                        ]);
+                    }
                 }
             }
         }

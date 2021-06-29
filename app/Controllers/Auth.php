@@ -19,11 +19,12 @@ class Auth extends ResourceController
         $password       = $this->request->getPost('password');
         $firstName      = $this->request->getPost('first_name');
         $lastName       = $this->request->getPost('last_name');
+        $phone       = $this->request->getPost('phone');
 
         $validation->setRules([
             'first_name'    => 'required|min_length[3]',
             'last_name'     => 'required|min_length[3]',
-            'username'      => 'required|alpha_numeric_space|min_length[3]|is_unique[users.username]',
+            //'username'      => 'required|alpha_numeric_space|min_length[3]|is_unique[users.username]',
             'email'         => 'required|valid_email|is_unique[users.email]',
             'pass_confirm'  => 'required|matches[password]',
             'password'      => 'required|min_length[8]|max_length[20]'
@@ -52,7 +53,7 @@ class Auth extends ResourceController
             'username'          => $username,
             'email'             => $email,
             'password'          => password_hash($password, PASSWORD_BCRYPT),
-            'phone'             => '',
+            'phone'             => !empty($phone) ? $phone : '',
             'avatar'            => 'profile_user-default.png',
             'verified_email'    => 0,
             'verified_phone'    => 0,

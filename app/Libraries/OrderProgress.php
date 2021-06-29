@@ -121,14 +121,14 @@ class OrderProgress
                 $coupon = $this->dataVoucher($subtotal, $value['id']);
                 $courier = $this->dataCourier($value['courier']);
 
-                $this->request['total'] += is_object($courier)? ($courier->cost + $subtotal) : 0;
+                $this->request['total'] += $courier !== null? ($courier["cost"] + $subtotal) : 0;
 
                 $this->stores[] = [
                     'transaction_id'    => 0,
-                    'coupon'            => is_object($coupon) ? json_encode($coupon) : null,
+                    'coupon'            => $coupon !== null? json_encode($coupon) : null,
                     'invoice'           => 'INV' . date('ymd') . $this->createNumber(4, ($this->countOrder + $key)),
                     'resi'              => '',
-                    'courier'           => is_object($courier) ? json_encode($courier) : null,
+                    'courier'           => $courier !== null? json_encode($courier) : null,
                     'carts'             => $carts
                 ];
             }
@@ -197,9 +197,19 @@ class OrderProgress
     }
 
     private function dataCourier($cid) {
-        $courier = is_array($cid) ? $cid : $this->models['couriers']->where($cid)->getRow();
+        $courier = is_int($cid) ? $this->models['couriers']->where($cid)->getRow() : $cid;
         if ($courier) { 
-            return $courier;
+            $courier = is_object($courier) ? get_object_vars($courier) : $courier;
+            return [
+                "id" => $courier["id"],
+                "name" => $courier["name"],
+                "icon" => $courier["icon"],
+                "cost" => $courier["cost"],
+                "description" => $courier["description"],
+                "discount" => $courier["discount"],
+                "etd" => $courier["etd"],
+                "service" => $courier["service"],
+            ];
         } else {
             $this->errors['courier'] = 'courier not found';
             return null;
