@@ -142,7 +142,7 @@ class Couriers extends BaseResourceController
                 $courier = $this->model->find($v);
                 if ($courier) {
                     $rajaOngkir = new \App\Libraries\RajaOngkir();
-                    if ($courier->code == 'fe') {
+                    if ($courier->code == 'fe' && $destinationCity->id === $originCity->id) { 
                         $entity = new \App\Entities\Courier();
                         $entity->setAttributes([
                             'id'            => $courier->id,
@@ -152,7 +152,7 @@ class Couriers extends BaseResourceController
                             'description'   => '',
                             'note'          => '',
                             'cost'          => 2000,
-                            'etd'           => ''
+                            'etd'           => '> 1 jam'
                         ]);
                         array_push($couriers, $entity);
                     } else {
