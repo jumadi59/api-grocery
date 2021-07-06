@@ -229,6 +229,11 @@ $routes->group('regions', function ($routes) {
 	$routes->get('address/(:num)',      	'Regions::address/$1');
 });
 
+$routes->group('transactions', ['filter' => 'admin'], function ($routes) {
+	$routes->get('/',      					'Transactions::index');
+	$routes->get('(:num)',      			'Transactions::show');
+});
+
 $routes->group('seller', ['filter' => 'seller'], function($routes)
 {
 	$routes->post('coupon/create',      			'Seller\Coupons::create');
@@ -307,7 +312,8 @@ $routes->group('users', ['filter' => 'customer'], function ($routes) {
 	$routes->post('create',					'Users::create', ['filter' => 'admin']);
 	$routes->post('/',						'Users::create', ['filter' => 'admin']);   // alias
 	$routes->get('/',           			'Users::index');
-	$routes->get('find/',      				'Users::sugestion');
+	$routes->get('count',      				'Users::count');
+	$routes->get('find',      				'Users::sugestion');
 	$routes->get('show/(:segment)',      	'Users::show/$1');
 	$routes->get('(:segment)',           	'Users::show/$1');  // alias
 	$routes->put('update/(:segment)',    	'Users::update/$1');

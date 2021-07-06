@@ -10,7 +10,7 @@ class Stores extends Model
     protected $primaryKey = 'id';
     protected $allowedFields = [
         'name', 'icon', 'thumb', 'user_id', 'address_id', 'rating',
-        'courier_active', 'description', 'is_support_cod'
+        'courier_active', 'description', 'is_support_cod', 'is_activated'
     ];
     protected $returnType    = 'App\Entities\Store';
 
@@ -35,9 +35,12 @@ class Stores extends Model
     public function stores($limit, $offset)
     {
         return $this->builder()->select('
-        a.id, a.name, a.icon, a.thumb, a.courier_active, a.is_support_cod,
-        b.province')->from('stores a')
+        a.id, a.name, a.icon, a.thumb, a.courier_active, a.is_support_cod, a.created_at, a.user_id, a.is_activated,
+        b.province,
+        c.username, c.avatar, c.email, c.last_activity
+        ')->from('stores a')
             ->join('address b', 'b.id=a.address_id', 'left')
+            ->join('users c', 'c.id=a.user_id', 'left')
             ->groupBy('a.id')->limit($limit, $offset)->get()->getResult($this->returnType);
     }
 

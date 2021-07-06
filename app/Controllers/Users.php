@@ -23,8 +23,9 @@ class Users extends BaseResourceController
             ];
             $data = !is_null($query) ? $this->model->search(trim($query), $limit, $offset, $filters) : $this->model->users($limit, $offset, $filters);
             if (count($data) > 0) {
+                $resultData['total'] = $this->model->count($query, $filters);
                 return $this->respond([
-                    'total' => $this->model->count($query, $filters),
+                    'data'      => $resultData,
                     'results' => $data
                 ]);
             } else {
@@ -38,6 +39,18 @@ class Users extends BaseResourceController
                 return $this->failNotFound('No Data Found');
             }
         }
+    }
+    
+    public function count() {
+        $query      = $this->request->getGet('query');
+        $filters    = [
+            'sort'      => $this->request->getGet('sort'),
+            'address'   => $this->request->getGet('address'),
+            'username'  => $this->request->getGet('username')
+        ];
+        return $this->respond([
+            'result' => $this->model->count($query, $filters)
+        ]);
     }
 
     public function show($id = null)

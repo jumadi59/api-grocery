@@ -15,9 +15,14 @@ class Orders extends BaseResourceController
 
     public function index()
     {
+        $limit  = $this->request->getGet('limit');
+        $offset = $this->request->getGet('offset');
+        
         $store      = $this->store();
-        $orderItems = new OrderItems();
-        $data = $this->model->orderForStore($store->id);
+        $filters = [
+            'store' => $store->id
+        ];
+        $data = $this->model->orderForStore($limit, $offset, $filters);
         if (count($data) > 0) {
             $resultData['total'] = count($data);
             return $this->respond([

@@ -12,15 +12,41 @@ class Transactions extends BaseResourceController
     protected $format    = 'json';
 
 
+    public function index()
+    {
+        $admin = $this->admin();
+
+        $limit  = $this->request->getGet('limit');
+        $offset = $this->request->getGet('offset');
+        $query = $this->request->getGet('query');
+
+        $filters = [
+            'user_id'      => $this->request->getGet('user_id'),
+            'status'  => $this->request->getGet('status')
+        ];
+        
+        if ($admin) {
+            $results = $this->model->transactions($limit, $offset, $filters, $query);
+            $resultData['total'] = $this->model->count($query, $filters);
+            return $this->respond([
+                'data'      => $resultData,
+                'results'   => $results
+            ]);
+        }
+    }
+
     public function show($id = null)
     {
         $user   = $this->user();
-        $data   = $this->model->transaction($id, $user->id);
-        $status = Midtrans::statusTransaction($id);
+        $admin = $this->admin();
+        $data   = $this->model->transaction($id, $admin !== null ? null : $user->id);
         if ($data) {
+            $status = Midtrans::statusTransaction($id);
             $data->setMidtrans($status);
-            $data->description  = "Dicek dalam 5 menit setelah pembayaran berhasil";
-            $data->instructions = $this->intructions($data->payment->code);
+            if ($admin === null) {
+                $data->description  = "Dicek dalam 5 menit setelah pembayaran berhasil";
+                $data->instructions = $this->intructions($data->payment->code);
+            }
             return $this->respond($data);
         } else {
             return $this->failNotFound('No Data Found with id ' . $id);

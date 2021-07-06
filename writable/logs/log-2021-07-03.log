@@ -1,0 +1,52 @@
+CRITICAL - 2021-07-03 12:34:57 --> Undefined index: HTTP_APPLICATION
+#0 C:\xampp\htdocs\api\app\Filters\Cors.php(29): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', 'C:\\xampp\\htdocs...', 29, Array)
+#1 C:\xampp\htdocs\api\system\Filters\Filters.php(173): App\Filters\Cors->before(Object(CodeIgniter\HTTP\IncomingRequest), NULL)
+#2 C:\xampp\htdocs\api\system\CodeIgniter.php(382): CodeIgniter\Filters\Filters->run('/', 'before')
+#3 C:\xampp\htdocs\api\system\CodeIgniter.php(312): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 C:\xampp\htdocs\api\public\index.php(45): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2021-07-03 12:34:58 --> Undefined index: HTTP_APPLICATION
+#0 C:\xampp\htdocs\api\app\Filters\Cors.php(29): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', 'C:\\xampp\\htdocs...', 29, Array)
+#1 C:\xampp\htdocs\api\system\Filters\Filters.php(173): App\Filters\Cors->before(Object(CodeIgniter\HTTP\IncomingRequest), NULL)
+#2 C:\xampp\htdocs\api\system\CodeIgniter.php(382): CodeIgniter\Filters\Filters->run('favicon.ico', 'before')
+#3 C:\xampp\htdocs\api\system\CodeIgniter.php(312): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 C:\xampp\htdocs\api\public\index.php(45): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2021-07-03 12:35:47 --> Undefined index: HTTP_APPLICATION
+#0 C:\xampp\htdocs\api\app\Filters\Cors.php(28): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', 'C:\\xampp\\htdocs...', 28, Array)
+#1 C:\xampp\htdocs\api\system\Filters\Filters.php(173): App\Filters\Cors->before(Object(CodeIgniter\HTTP\IncomingRequest), NULL)
+#2 C:\xampp\htdocs\api\system\CodeIgniter.php(382): CodeIgniter\Filters\Filters->run('/', 'before')
+#3 C:\xampp\htdocs\api\system\CodeIgniter.php(312): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 C:\xampp\htdocs\api\public\index.php(45): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2021-07-03 12:35:47 --> Undefined index: HTTP_APPLICATION
+#0 C:\xampp\htdocs\api\app\Filters\Cors.php(28): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', 'C:\\xampp\\htdocs...', 28, Array)
+#1 C:\xampp\htdocs\api\system\Filters\Filters.php(173): App\Filters\Cors->before(Object(CodeIgniter\HTTP\IncomingRequest), NULL)
+#2 C:\xampp\htdocs\api\system\CodeIgniter.php(382): CodeIgniter\Filters\Filters->run('favicon.ico', 'before')
+#3 C:\xampp\htdocs\api\system\CodeIgniter.php(312): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 C:\xampp\htdocs\api\public\index.php(45): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2021-07-03 13:44:41 --> Unknown column 'is_activated' in 'where clause'
+#0 C:\xampp\htdocs\api\system\Database\MySQLi\Connection.php(331): mysqli->query('SELECT *\nFROM `...')
+#1 C:\xampp\htdocs\api\system\Database\BaseConnection.php(741): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *\nFROM `...')
+#2 C:\xampp\htdocs\api\system\Database\BaseConnection.php(669): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *\nFROM `...')
+#3 C:\xampp\htdocs\api\system\Database\BaseBuilder.php(1860): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\xampp\htdocs\api\app\Models\BaseModel.php(27): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\api\app\Controllers\Pages.php(35): App\Models\BaseModel->getRow()
+#6 C:\xampp\htdocs\api\system\CodeIgniter.php(918): App\Controllers\Pages->show('transaction')
+#7 C:\xampp\htdocs\api\system\CodeIgniter.php(404): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Pages))
+#8 C:\xampp\htdocs\api\system\CodeIgniter.php(312): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\api\public\index.php(45): CodeIgniter\CodeIgniter->run()
+#10 {main}
+CRITICAL - 2021-07-03 13:47:02 --> Table 'gocery.payment' doesn't exist
+#0 C:\xampp\htdocs\api\system\Database\MySQLi\Connection.php(331): mysqli->query('SELECT `a`.*, `...')
+#1 C:\xampp\htdocs\api\system\Database\BaseConnection.php(741): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `a`.*, `...')
+#2 C:\xampp\htdocs\api\system\Database\BaseConnection.php(669): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `a`.*, `...')
+#3 C:\xampp\htdocs\api\system\Database\BaseBuilder.php(1860): CodeIgniter\Database\BaseConnection->query('SELECT `a`.*, `...', Array, false)
+#4 C:\xampp\htdocs\api\app\Models\Transactions.php(50): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\api\app\Controllers\Transactions.php(29): App\Models\Transactions->transactions('10', '0', Array, NULL)
+#6 C:\xampp\htdocs\api\system\CodeIgniter.php(918): App\Controllers\Transactions->index()
+#7 C:\xampp\htdocs\api\system\CodeIgniter.php(404): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Transactions))
+#8 C:\xampp\htdocs\api\system\CodeIgniter.php(312): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\api\public\index.php(45): CodeIgniter\CodeIgniter->run()
+#10 {main}

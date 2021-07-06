@@ -10,14 +10,14 @@ class Customer extends Cors
 
   public function before(RequestInterface $request, $arguments = null)
   {
-      parent::before($request, $arguments);
+      //parent::before($request, $arguments);
       if ($this->user() == null) {
         http_response_code(401);
         echo json_encode([
           'status'   => 401,
           'message' =>  'Unauthorized'
         ]);
-        die();
+        exit();
       }
   }
 
@@ -28,7 +28,7 @@ class Customer extends Cors
     if ($decoded) {
       $data = $userModel->user($decoded->data->id);
       if ($data) {
-        $userModel->update_activity($decoded->data->id);
+        //$userModel->update_activity($decoded->data->id);
         return $data;
       }
     }

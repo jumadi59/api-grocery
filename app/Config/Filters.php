@@ -24,6 +24,7 @@ class Filters extends BaseConfig
 			//'csrf',
 		],
 		'after'  => [
+			'cors',
 			'toolbar',
 			//'honeypot'
 		],

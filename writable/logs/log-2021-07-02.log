@@ -1,0 +1,24 @@
+CRITICAL - 2021-07-02 13:08:27 --> Unknown column 'c.province' in 'field list'
+#0 C:\xampp\htdocs\api\system\Database\MySQLi\Connection.php(331): mysqli->query('SELECT `a`.`id`...')
+#1 C:\xampp\htdocs\api\system\Database\BaseConnection.php(741): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `a`.`id`...')
+#2 C:\xampp\htdocs\api\system\Database\BaseConnection.php(669): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `a`.`id`...')
+#3 C:\xampp\htdocs\api\system\Database\BaseBuilder.php(1860): CodeIgniter\Database\BaseConnection->query('SELECT `a`.`id`...', Array, false)
+#4 C:\xampp\htdocs\api\app\Models\Users.php(74): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\api\app\Controllers\Users.php(24): App\Models\Users->users('10', '0', Array)
+#6 C:\xampp\htdocs\api\system\CodeIgniter.php(918): App\Controllers\Users->index()
+#7 C:\xampp\htdocs\api\system\CodeIgniter.php(404): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Users))
+#8 C:\xampp\htdocs\api\system\CodeIgniter.php(312): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\api\public\index.php(45): CodeIgniter\CodeIgniter->run()
+#10 {main}
+CRITICAL - 2021-07-02 13:08:37 --> Unknown column 'c.province' in 'field list'
+#0 C:\xampp\htdocs\api\system\Database\MySQLi\Connection.php(331): mysqli->query('SELECT `a`.`id`...')
+#1 C:\xampp\htdocs\api\system\Database\BaseConnection.php(741): CodeIgniter\Database\MySQLi\Connection->execute('SELECT `a`.`id`...')
+#2 C:\xampp\htdocs\api\system\Database\BaseConnection.php(669): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT `a`.`id`...')
+#3 C:\xampp\htdocs\api\system\Database\BaseBuilder.php(1860): CodeIgniter\Database\BaseConnection->query('SELECT `a`.`id`...', Array, false)
+#4 C:\xampp\htdocs\api\app\Models\Users.php(74): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\api\app\Controllers\Users.php(24): App\Models\Users->users('10', '0', Array)
+#6 C:\xampp\htdocs\api\system\CodeIgniter.php(918): App\Controllers\Users->index()
+#7 C:\xampp\htdocs\api\system\CodeIgniter.php(404): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Users))
+#8 C:\xampp\htdocs\api\system\CodeIgniter.php(312): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\api\public\index.php(45): CodeIgniter\CodeIgniter->run()
+#10 {main}

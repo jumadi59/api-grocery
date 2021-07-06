@@ -137,7 +137,8 @@ class Midtrans
         //return Midtrans::status($response);
     }
 
-    public static function debit($data) {
+    public static function debit($data)
+    {
         if (strpos(Config::$serverKey, 'your ') != false) {
             return "Please set your payment server key";
         }
@@ -194,10 +195,10 @@ class Midtrans
             'transaction_details'   => $data['transaction_details'],
             'customer_details'      => $data['customer_details'],
             'custom_expiry'         => $data['custom_expiry'],
-            $data['payment']->code  => array(
-                'enable_callback'   => true,
-                'callback_url'      => 'someapps://callback'
-            )
+            //$data['payment']->code  => array(
+            //    'enable_callback'   => true,
+            //    'callback_url'      => 'someapps://callback'
+            //)
         );
         try {
             $response = CoreApi::charge($params);
@@ -260,7 +261,7 @@ class Midtrans
 
     private static function status_payment($response)
     {
-        $data = null;
+        $data = [];
         switch ($response->payment_type) {
             case 'bank_transfer':
                 if (isset($response->va_numbers)) {
@@ -278,13 +279,16 @@ class Midtrans
                 $data['biller_code']        = $response->biller_code;
                 break;
             case 'gopay':
-                $data['type']                 = $response->payment_type;
-                $data['qr_code_url']          = $response->actions[0]->url;
-                $data['deep_link']            = $response->actions[1]->url;
+                if (isset($response->actions)) {
+                    $data['qr_code_url']          = $response->actions[0]->url;
+                    $data['deep_link']            = $response->actions[1]->url;
+                    $data['cancel_link']          = $response->actions[3]->url;
+                }
                 break;
             case 'cstore':
                 $data['store']              = $response->store;
                 $data['payment_code']       = $response->payment_code;
+                $data['merchant_id']        = $response->merchant_id;
                 break;
             case 'credit_card':
                 $data['redirect_url']       = $response->redirect_url;

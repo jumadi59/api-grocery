@@ -16,14 +16,12 @@ class Admin implements FilterInterface
     header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method, Authorization");
     header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
     header('Content-Type: application/json');
+
     $method = $_SERVER['REQUEST_METHOD'];
-    if ($method == "OPTIONS") {
-      http_response_code(401);
-      echo json_encode([
-        'status'   => 401,
-        'message' =>  'Unauthorized'
-      ]);
-      die();
+    if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+      //header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS');
+      //header('Access-Control-Allow-Headers: Content-Type');
+      exit();
     } else {
       if ($this->admin() == null) {
         http_response_code(401);
@@ -31,7 +29,7 @@ class Admin implements FilterInterface
           'status'   => 401,
           'message' =>  'Unauthorized'
         ]);
-        die();
+        exit();
       }
     }
   }
@@ -48,7 +46,7 @@ class Admin implements FilterInterface
       $data = $userModel->user($decoded->data->id);
       if ($data) {
         if ($data->role == 1) {
-          $userModel->update_activity($decoded->data->id);
+          //$userModel->update_activity($decoded->data->id);
           return $data;
         }
       }

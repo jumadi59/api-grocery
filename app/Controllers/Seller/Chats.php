@@ -136,17 +136,17 @@ class Chats extends BaseResourceController
 
     public function send($deviceToken, $data)
     {
+        $data['payload']['flag']  = 1;
+        
         $notif['title']         = $data['title'];
         $notif['message']       = $data['message'];
         $notif['is_background'] = false;
-        $notif['flag']          = 1;
-        $notif['timestamp'] =  (isset($data['timestamp']) && !empty($data['timestamp'])) ? $data['timestamp'] : time();
+        $notif['timestamp']     = time();
+        $notif['payload'] = $data['payload'];
 
         if (isset($data['image']) && !empty($data['image'])) :           $notif['image'] = $data['image'];
         endif;
         if (isset($data['action']) && !empty($data['action'])) :         $notif['action'] = $data['action'];
-        endif;
-        if (isset($data['payload']) && !empty($data['payload'])) :       $notif['payload'] = $data['payload'];
         endif;
 
         if ($deviceToken) {

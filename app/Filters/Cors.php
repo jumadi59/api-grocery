@@ -18,15 +18,15 @@ class Cors implements FilterInterface
     header('Access-Control-Allow-Origin: *');
     header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method, Authorization, Application");
     header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+    header('Content-Type: application/json');
     
     $whitelistIP = array("103.58.103.177", "114.125.253.195");
     if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-      header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS');
-      header('Access-Control-Allow-Headers: Content-Type');
+      //header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS');
+      //header('Access-Control-Allow-Headers: Content-Type');
       exit();
     } else if (!in_array($this->get_client_ip(), $whitelistIP)) {
-        if ($_SERVER['HTTP_APPLICATION'] !== Setting::getAppID()) {
-            header('Content-Type: application/json');
+        if ( !isset($_SERVER['HTTP_APPLICATION']) || $_SERVER['HTTP_APPLICATION'] !== Setting::getAppID()) {
             http_response_code(401);
             echo json_encode([
                 'status'   => 401,

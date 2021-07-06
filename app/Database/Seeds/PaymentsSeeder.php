@@ -104,7 +104,7 @@ class PaymentsSeeder extends \CodeIgniter\Database\Seeder
                 'service'       => '',
                 'icon'          => 'qris_logo.png',
                 'description'   => 'Pay with your QRIS',
-                'note'          => '',
+                'note'          => 'Untuk melakukan pembayara silahkan scan QR Code atau klik Bayar sekarang',
                 'is_activated'    => true,
                 'fee'           => 1000,
             ], [

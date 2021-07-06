@@ -16,6 +16,7 @@ class Store extends BaseEntity
     protected $courier_active;
     protected $description;
     protected $address;
+    protected $is_activated;
 
     protected $created_at;
     protected $updated_at;
@@ -34,6 +35,7 @@ class Store extends BaseEntity
         'description'       => 'string',
         'user'              => 'object',
         'address'           => 'object',
+        'is_activated'      => 'boolean',
         'rating'            => 'float'
     ];
 

@@ -135,16 +135,22 @@ class Orders extends BaseModel
             ->groupBy('a.id')->where('a.transaction_id', $transactionId)->get()->getResult($this->returnType);
     }
 
-    public function orderForStore($storeId)
+    public function orderForStore($limit, $offset, $filters)
     {
         return $this->builder()->select('
-        a.*,
-        c.id as order_item_id, c.price as product_price, c.name as product_name ,c.thumb as product_thumb, c.discount as product_discount, c.quantity,
+        a.*, b.user_id, b.created_at,
+        SUM(DISTINCT c.price) as subtotal,
         d.store_id,
+        e.email, e.avatar,
+        f.first_name, f.last_name
         ')->from('orders a')
-            ->join('order_items c', 'c.order_id=a.id')
+            ->join('transactions b', "b.id=a.transaction_id and b.status='settlement'")
+            ->join('order_items c', 'c.order_id=a.id', 'inner')
             ->join('products d', 'd.id=c.product_id')
-            ->groupBy('c.id')->where('d.store_id', $storeId)->get()->getResult($this->returnType);
+            ->join('users e', 'e.id=b.user_id')
+            ->join('data_customers f', 'f.user_id=b.user_id')
+            ->groupBy('a.id')->limit($limit, $offset)->where('d.store_id', $filters['store'])
+            ->get()->getResult($this->returnType);
     }
 
     public function chart($storeId, $last) {

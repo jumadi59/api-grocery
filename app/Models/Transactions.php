@@ -19,9 +19,10 @@ class Transactions extends Model
     protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
     protected $skipValidation     = false;
-
-    public function transactions($uid, $status = null)
+    
+    public function transactions($limit, $offset, $filters, $search)
     {
+        $where = [];
         $this->builder()->select('
         a.*, 
         b.email, .b.phone,
@@ -31,15 +32,39 @@ class Transactions extends Model
             ->from('transactions a')
             ->join('users b', 'b.id=a.user_id', 'left')
             ->join('data_customers c', 'c.user_id=a.user_id', 'left')
-            ->join('payment d', 'd.id=a.payment_id', 'left')
-            ->groupBy('a.id');
+            ->join('payments d', 'd.id=a.payment_id', 'left')
+            ->groupBy('a.id')->limit($limit, $offset);
 
-        $where['a.user_id'] = $uid;
-        if ($status) {
-            $where['a.status'] = $status;
+        if (isset($filters['user_id']) && !empty($filters['user_id'])) {
+            $where['a.user_id'] = $filters['user_id'];
         }
-        $this->builder->where($where);
+        if (isset($filters['status']) && !empty($filters['status'])) {
+            $where['a.status'] = $filters['status'];
+        }
+        if ($search !== null && !empty($search)) {
+            $this->builder->like('a.id', $search);
+        }
+        if (count($where) > 0) {
+            $this->builder->where($where);
+        }
         return $this->builder->get()->getResult($this->returnType);
+    }
+
+    public function count($serach, $filters) {
+        $where = [];
+        $this->builder()->select('COUNT(id) as transt_count');
+        
+        if (isset($filters['user_id']) && !empty($filters['user_id'])) {
+            $where['a.user_id'] = $filters['user_id'];
+        }
+        if (isset($filters['status']) && !empty($filters['status'])) {
+            $where['a.status'] = $filters['status'];
+        }
+        if (count($where) > 0) {
+            $this->builder->where($where);
+        }
+        $query = $this->builder->get()->getRow();
+        return $query == null ? 0 : (int) $query->transt_count;
     }
 
     public function count_perday()
@@ -64,7 +89,7 @@ class Transactions extends Model
                 ->groupBy('a.id')->where(['a.id' => $id, 'a.user_id' => $userId])->get()->getRow(0, $this->returnType);
         } else {
             return $this->builder()->select('
-            a.id, a.total, a.status, a.created_at, a.payment_at, a.expired_at, a.user_id,
+            a.id, a.total, a.status, a.created_at, a.payment_at, a.expired_at, a.user_id, a.address,
             b.description as payment_description, b.note as payment_note, b.code, b.name as payment_name, b.type, b.type_name , b.icon as payment_icon, b.fee,
             c.email, c.phone,
             d.first_name, d.last_name,

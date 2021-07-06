@@ -104,6 +104,8 @@ class Orders extends BaseResourceController
             if ($response) {
                 $orderProggress->claerCarts();
                 $transaction->setMidtrans($response);
+                $transaction->description  = "Dicek dalam 5 menit setelah pembayaran berhasil";
+                $transaction->instructions = $this->intructions($transaction->payment->code);
                 return $this->respondCreated([
                     'status'    => 201,
                     'data'      => $transaction,
@@ -212,5 +214,19 @@ class Orders extends BaseResourceController
             $notification->sendEmail($transaction->user, $data);
             $notification->send($transaction->user->device_token, $data);
         }
+    }
+    
+    public function intructions($code = null)
+    {
+        $file = file_get_contents(ROOTPATH . 'public/files/intructions.json');
+        $obj = json_decode($file, true);
+        $intruction = [];
+        foreach ($obj as $key => $value) {
+            if ($key == $code) {
+                $intruction = $value;
+            }
+        }
+
+        return $intruction;
     }
 }

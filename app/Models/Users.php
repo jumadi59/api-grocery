@@ -35,7 +35,7 @@ class Users extends Model
         b.first_name, b.last_name,
         c.province, c.city, c.subdistrict, c.street')->from('users a')
             ->join('data_customers b', 'b.user_id=a.id')
-            ->join('address c', 'c.user_id=a.id AND c.primary=1')
+            ->join('address c', 'c.user_id=a.id AND c.primary=1', 'left')
             ->like('a.username', $query);
         if ($filters) {
             $this->sort($filters)->where($filters);
@@ -47,7 +47,7 @@ class Users extends Model
     {
         $this->builder()->select('a.id, c.id as address_id')->from('users a')
             ->join('data_customers b', 'b.user_id=a.id')
-            ->join('address c', 'c.user_id=a.id AND c.primary=1');
+            ->join('address c', 'c.user_id=a.id AND c.primary=1', 'left');
 
         if ($filters) {
             $this->where($filters);
@@ -64,9 +64,10 @@ class Users extends Model
         $this->builder()->select('
         a.id, a.avatar, a.username, a.email, a.phone, a.last_activity, a.created_at,
         b.first_name, b.last_name,
-        c.province, c.city, c.subdistrict, c.street')->from('users a')
+        c.province, c.city, c.subdistrict, c.street
+        ')->from('users a')
             ->join('data_customers b', 'b.user_id=a.id')
-            ->join('address c', 'c.user_id=a.id AND c.primary=1')
+            ->join('address c', 'c.user_id=a.id AND c.primary=1', 'left')
             ->groupBy('a.id');
         if ($filters) {
             $this->sort($filters)->where($filters);

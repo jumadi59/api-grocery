@@ -99,16 +99,15 @@ class Products extends Discover
     {
         $query      = $this->request->getGet('query') ?: null;
         $filters    = [
-            'sort'      => $this->request->getGet('sort'),
-            'category'  => $this->request->getGet('category'),
-            'min_price' => $this->request->getGet('min_price'),
-            'max_price' => $this->request->getGet('max_price'),
-            'get'       => $this->request->getGet('get'),
-            'where'     => $this->request->getGet('where'),
+            'sort'                  => $this->request->getGet('sort'),
+            'parent_category'       => $this->request->getGet('parent_category'),
+            'category'              => $this->request->getGet('category'),
+            'product.price >='      => $this->request->getGet('min_price'),
+            'product.price <='      => $this->request->getGet('max_price'),
 
-            'lat'       => $this->request->getGet('lat'),
-            'long'      => $this->request->getGet('long'),
-            'is_active' => $this->request->getGet('is_active') == 'false' ? false : true
+            'lat'                   => $this->request->getGet('lat'),
+            'long'                  => $this->request->getGet('long'),
+            'product.is_activated'  => $this->request->getGet('is_active') == 'false' ? false : true
         ];
         return $this->respond([
             'status'   => 200,

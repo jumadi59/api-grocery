@@ -52,6 +52,10 @@ class Stores extends Migration
                 'constraint'        => 2,
                 'default'           => 0,
             ],
+            'is_activated'         => [
+                'type'              => 'TINYINT',
+                'constraint'        => 1,
+            ],
             'created_at'         => [
                 'type'              => 'DATETIME'
             ],

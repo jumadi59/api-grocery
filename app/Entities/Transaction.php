@@ -14,6 +14,7 @@ class Transaction extends BaseEntity
     protected $total;
     protected $status;
     protected $va_number;
+    protected $merchant_id;
 
     protected $note;
     protected $description;
@@ -48,6 +49,7 @@ class Transaction extends BaseEntity
         'va_number'     => 'string',
         'note'          => 'string',
         'description'   => 'string',
+        'merchant_id'   => 'string',
         'instructions'  => 'array?object',
     ];
 
