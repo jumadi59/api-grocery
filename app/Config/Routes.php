@@ -247,10 +247,10 @@ $routes->group('seller', ['filter' => 'seller'], function($routes)
 
 	$routes->post('product',         				'Seller\Products::create');  // alias
 	$routes->post('product/create',    				'Seller\Products::create');
+	$routes->post('product/update/(:segment)',    	'Seller\Products::updatePost/$1');
 	$routes->get('product',           				'Seller\Products::index');
 	$routes->get('product/cart',             		'Seller\Products::cart');
 	$routes->get('product/(:segment)',             	'Seller\Products::show/$1');
-	$routes->put('product/update/(:segment)',    	'Seller\Products::update/$1');
 	$routes->put('product/(:segment)',         		'Seller\Products::update/$1');  // alias
 	$routes->delete('product/delete/(:segment)',    'Seller\Products::delete/$1');
 	$routes->delete('product/(:segment)',         	'Seller\Products::delete/$1');  // alias
