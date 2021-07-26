@@ -59,7 +59,7 @@ class Products extends Discover
         $validation->setRules([
             'name'              => 'required|string',
             'price'             => 'required|numeric',
-            'thumb'             => 'uploaded[thumb]|mime_in[thumb,image/jpg,image/jpeg,image/png]|max_size[thumb,4096]',
+            'thumbs'            => 'uploaded[thumbs]|mime_in[thumbs,image/jpg,image/jpeg,image/png]|max_size[thumbs,4096]',
             'description'       => 'required|string|min_length[20]',
             'min_order'         => 'required|numeric',
             'category_id'       => 'required|numeric|is_not_unique[categories.id]',
@@ -133,7 +133,7 @@ class Products extends Discover
             $validation->setRules([
                 'name'              => 'required|string',
                 'price'             => 'required|numeric',
-                'thumb'             => 'uploaded[thumb]|mime_in[thumb,image/jpg,image/jpeg,image/png]|max_size[thumb,4096]',
+                'thumbs'            => 'uploaded[thumbs]|mime_in[thumbs,image/jpg,image/jpeg,image/png]|max_size[thumbs,4096]',
                 'description'       => 'required|string|min_length[20]',
                 'min_order'         => 'required|numeric',
                 'category_id'       => 'required|numeric|is_not_unique[categories.id]',
@@ -147,17 +147,39 @@ class Products extends Discover
             $validation->withRequest($this->request)->run();
             foreach ($validation->getRules() as $key => $value) {
                 if ($validation->hasError($key)) {
+                    if ($key !== "thumbs") {
+                        return $this->respond([
+                            'status'    => 203,
+                            'message'   => $validation->getError($key)
+                        ], 203);
+                    }
+                }
+            }
+
+            if (isset($_FILES['thumbs']['name'])) {
+                if (isset($validation) && $validation->getError('thumbs')) {
                     return $this->respond([
                         'status'    => 203,
-                        'message'   => $validation->getError($key)
+                        'message'   => $validation->getError('thumbs')
                     ], 203);
                 }
             }
-    
+
+            $imgUrls = $this->request->getVar('thumb_uri[]');
+            $imgs = array_merge($imgUrls === null ? [] : $imgUrls, isset($_FILES['thumbs']['name']) ? $this->uploadImage() : []);
+
+            $imgDeletes = $this->request->getVar('thumb_delete_uri[]');
+            foreach (($imgDeletes == null ? [] : $imgDeletes) as $value) {
+                if (!empty($value)) {
+                    unlink(ROOTPATH . 'public/images/' . $value);
+                    unlink(ROOTPATH . 'public/images/thumbnails/' . $value);
+                }
+            }
+
             $data = [
                 'name'              => $this->request->getVar('name'),
                 'price'             => $this->request->getVar('price'),
-                'thumb'             => implode(',', $this->uploadImage()),
+                'thumb'             => implode(',', $imgs),
                 'description'       => $this->request->getVar('description'),
                 'min_order'         => $this->request->getVar('min_order'),
                 'store_id'          => $store->id,
@@ -168,7 +190,7 @@ class Products extends Discover
                 'is_activated'      => $this->request->getVar('is_activated') == 'false' ? false : true,
                 'is_free_shipping'  => $this->request->getVar('is_free_shipping') == 'false' ? false : true,
                 'is_cod'            => $this->request->getVar('is_cod') == 'false' ? false : true,
-    
+
             ];
             $result = $this->model->update($id, $data);
             return $this->status_update($id, $result, 'product');
@@ -177,14 +199,18 @@ class Products extends Discover
         }
     }
 
-    public function uploadImage() : Array
+    public function uploadImage(): array
     {
-        
+
         $thumbs     = $this->request->getFiles();
         $nameThumb  = [];
-        foreach ($thumbs['thumb'] as $thumb) {
+        if (!isset($thumbs['thumbs'])) {
+            return $nameThumb;
+        }
+
+        foreach ($thumbs['thumbs'] as $thumb) {
             $path       = ROOTPATH . 'public/images/';
-            $thumbName  = 'product_'.$thumb->getRandomName();
+            $thumbName  = 'product_' . $thumb->getRandomName();
 
             array_push($nameThumb, $thumbName);
             $thumb->move($path, $thumbName);
