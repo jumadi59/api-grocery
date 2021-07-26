@@ -25,21 +25,18 @@ class BaseEntity extends Entity
                     $explode = explode('_', $key);
                     $end = $explode[count($explode) - 1];
                     unset($explode[count($explode) - 1]);
-                    $start = implode('_', $explode);
+                    $start = implode('_', $explode); 
                 }
-                if (!empty($value) && $value != '0') {
-                    if (property_exists($this, $end) && $start === $this->simpleName) {
+                if (property_exists($this, $end) && $start === $this->simpleName) {
+                    if (!empty($value) || (isset($this->casts[$end]) && $this->casts[$end] === "boolean")) {
                         $newData[$end] = $value;
-                    } else {
-                        $this->tmpData[$key] = $value;
                     }
+                } else {
+                    $this->tmpData[$key] = $value;
                 }
-            } else if (!empty($value) && $value != '0') {
+            } else if (!empty($value) || (isset($this->casts[$key]) && $this->casts[$key] === "boolean")) {
                 $newData[$key] = $value;
             }
-        }
-        if ($this->simpleName === 'chat') {
-        
         }
         $result = parent::setAttributes($newData);
         $this->setObjects();
