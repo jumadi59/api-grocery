@@ -21,7 +21,7 @@ class App extends BaseConfig
 	| environments.
 	|
 	*/
-	public $baseURL = 'http://api.gocery.test/';
+	public $baseURL = 'http://192.168.0.105/api/';
 
 	/*
 	|--------------------------------------------------------------------------
