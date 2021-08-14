@@ -62,7 +62,6 @@ class Chats extends BaseResourceController
         $validation->setRules([
             'send_to'           => 'required|numeric|is_not_unique[stores.id]',
             'message'           => 'string',
-            'data'              => 'string',
             'time'              => 'required|numeric',
         ]);
         $validation->withRequest($this->request)->run();
