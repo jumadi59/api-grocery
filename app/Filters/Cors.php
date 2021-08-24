@@ -2,6 +2,7 @@
 
 namespace App\Filters;
 
+use App\Controllers\cronJob;
 use App\Libraries\Setting;
 use App\Libraries\Token;
 use CodeIgniter\Filters\FilterInterface;
@@ -71,6 +72,11 @@ class Cors implements FilterInterface
         return $data;
       }
     }
+    $jobs = new cronJob();
+    $jobs->verify();
+    $jobs->transactions();
+    $jobs->orders();
+    
     return null;
   }
 }

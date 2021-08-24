@@ -340,9 +340,9 @@ $routes->group('sanbox', function ($routes) {
 });
 
 $routes->group('jobs', function ($routes) {
-	$routes->get('transactions', 			'Transactions::cronJob');
-	$routes->get('orders', 					'Orders::cronJob');
-	$routes->get('verify', 					'Verify::cronJob');
+	$routes->get('transactions', 			'cronJob::transactions');
+	$routes->get('orders', 					'cronJob::orders');
+	$routes->get('verify', 					'cronJob::verify');
 });
 
 $routes->get('migrate', 'Migrate::index');
