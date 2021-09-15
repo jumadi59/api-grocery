@@ -12,6 +12,8 @@ class OrderItem extends BaseEntity
     protected $variant_id;
     protected $quantity;
     protected $note;
+    protected $discount;
+
 
     protected $objects = [
         'product' => 'App\Entities\Product',
@@ -23,5 +25,6 @@ class OrderItem extends BaseEntity
         'quantity'  => 'int',
         'variant_id'  => 'int',
         'note'      => 'string',
+        'discount' => 'int'
     ];
 }

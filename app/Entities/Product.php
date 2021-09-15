@@ -50,7 +50,7 @@ class Product extends BaseEntity
         'category'          => 'object',
         'thumb'             => 'string',
         'thumbs'            => 'array',
-        'discount'          => 'object',
+        'discount'          => 'object?int',
         'weight'            => 'float',
         'store'             => 'object',
         'rating'            => 'float',
