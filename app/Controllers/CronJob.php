@@ -13,6 +13,13 @@ class cronJob extends BaseResourceController
 
     protected $format    = 'json';
 
+    public function index() {
+        $this->verify();
+        $this->transactions();
+        $this->orders();
+        
+        return "";
+    }
 
     public function verify()
     {

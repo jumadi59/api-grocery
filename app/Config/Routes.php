@@ -341,6 +341,7 @@ $routes->group('sanbox', function ($routes) {
 });
 
 $routes->group('jobs', function ($routes) {
+	$routes->get('/',             			'cronJob::index');
 	$routes->get('transactions', 			'cronJob::transactions');
 	$routes->get('orders', 					'cronJob::orders');
 	$routes->get('verify', 					'cronJob::verify');
