@@ -25,6 +25,17 @@ class Orders extends BaseResourceController
         ];
         $orderItems = new OrderItems();
         $data       = $this->model->orders($user->id, $filters);
+        
+        if ($filters['status'] == 'canceled') {
+            $expireds = $this->model->orders($user->id, array('status' => 'expire'));
+            if (count($expireds) > 0) $data = array_merge($data, $expireds);
+        } else 
+        if ($filters['status'] == 'expire') {
+            $canceleds = $this->model->orders($user->id, array('status' => 'canceled'));
+            if (count($canceleds) > 0) $data = array_merge($data, $canceleds);
+        }
+        
+
         if (count($data) > 0) {
             foreach ($data as $key => $value) {
                 $items      = $orderItems->order_items($value->id);
