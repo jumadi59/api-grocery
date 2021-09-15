@@ -4,6 +4,8 @@ namespace App\Controllers;
 
 use App\Controllers\BaseResourceController;
 use App\Libraries\Midtrans;
+use App\Libraries\Setting;
+use Midtrans\Config;
 
 class Transactions extends BaseResourceController
 {
@@ -15,6 +17,7 @@ class Transactions extends BaseResourceController
     public function index()
     {
         $admin = $this->admin();
+        $user   = $this->user();
 
         $limit  = $this->request->getGet('limit');
         $offset = $this->request->getGet('offset');
@@ -24,7 +27,7 @@ class Transactions extends BaseResourceController
             'user_id'      => $this->request->getGet('user_id'),
             'status'  => $this->request->getGet('status')
         ];
-        
+
         if ($admin) {
             $results = $this->model->transactions($limit, $offset, $filters, $query);
             $resultData['total'] = $this->model->count($query, $filters);
@@ -32,6 +35,16 @@ class Transactions extends BaseResourceController
                 'data'      => $resultData,
                 'results'   => $results
             ]);
+        } else if ($user) {
+            $filters['user_id'] = $user->id;
+            $results = $this->model->transactions($limit, $offset, $filters, $query);
+            foreach ($results as $value) {
+                $status = Midtrans::statusTransaction($value->id);
+                $value->setMidtrans($status);
+            }
+            return $this->respond($results);
+        } else {
+            return $this->failUnauthorized();
         }
     }
 
@@ -88,19 +101,26 @@ class Transactions extends BaseResourceController
         if ($data) {
             if ($data->status == 'pending') {
                 $transaction = new \Midtrans\Transaction();
+                Config::$isProduction = Setting::isProduction();
+                Config::$serverKey = Setting::getApiKeyMidtransServer();
                 $result = $transaction->cancel($id);
-                if ($result) {
+                if ($result == 200) {
+                    $this->model->update($id, ['status' => 'cancel']);
+                    return $this->respond([
+                        'status'   => 200,
+                        'message' =>  'Success cancel'
+                    ]);
+                } else {
+                    return $this->respond([
+                        'status'   => $result,
+                        'message' =>  'Error cancel'
+                    ], 406);
                 }
-                $this->model->update($id, ['status' => 'cancel']);
-                return $this->respond([
-                    'status'   => 200,
-                    'message' =>  'Success cancel'
-                ]);
             }
             return $this->respond([
                 'status'   => 406,
                 'message' =>  'Error cancel'
-            ],406);
+            ], 406);
         }
     }
 }

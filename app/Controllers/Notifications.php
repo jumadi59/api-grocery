@@ -11,6 +11,7 @@ use App\Models\Carts;
 use App\Models\Chats;
 use App\Models\OrderItems;
 use App\Models\Orders;
+use App\Models\Transactions;
 use App\Models\Users;
 
 class Notifications extends BaseResourceController
@@ -37,6 +38,7 @@ class Notifications extends BaseResourceController
         $user           = $this->user();
         $cartModel      = new Carts();
         $ordersModel    = new Orders();
+        $transactionModel = new Transactions();
         $orderItemModel = new OrderItems();
         $chatModel = new Chats();
 
@@ -46,7 +48,7 @@ class Notifications extends BaseResourceController
             'wait_review_count' => $orderItemModel->witReviews($user->id),
             'chat_count'        => $chatModel->countAllNewChat($user->id, 'sellet'),
             'orders'            => [
-                'pending_count'         => $ordersModel->count($user->id, 'pending'),
+                'pending_count'         => $transactionModel->count('', ['user_id' => $user->id,'status' => 'pending', 'is_expired' => 'true']),
                 'confirmation_count'    => $ordersModel->count($user->id, 'confirmation'),
                 'packing_count'         => $ordersModel->count($user->id, 'packed'),
                 'shipping_count'        => $ordersModel->count($user->id, 'sent'),

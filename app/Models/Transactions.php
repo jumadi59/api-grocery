@@ -55,10 +55,13 @@ class Transactions extends Model
         $this->builder()->select('COUNT(id) as transt_count');
         
         if (isset($filters['user_id']) && !empty($filters['user_id'])) {
-            $where['a.user_id'] = $filters['user_id'];
+            $where['user_id'] = $filters['user_id'];
         }
         if (isset($filters['status']) && !empty($filters['status'])) {
-            $where['a.status'] = $filters['status'];
+            $where['status'] = $filters['status'];
+        }
+        if (isset($filters['is_expired']) && boolval($filters['is_expired'])) {
+            $where['expired_at >'] = date('Y-m-d H:i:s');
         }
         if (count($where) > 0) {
             $this->builder->where($where);

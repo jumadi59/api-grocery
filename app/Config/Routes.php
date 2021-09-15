@@ -163,6 +163,7 @@ $routes->group('notifications', function ($routes) {
 $routes->group('transactions', ['filter' => 'customer'], function ($routes) {
 	$routes->get('cancel/(:num)', 			'Transactions::cancel/$1');
 	$routes->get('show/(:num)', 			'Transactions::show/$1');
+	$routes->get('/',                   	'Transactions::index');
 	$routes->get('(:num)', 					'Transactions::show/$1');   // alias
 });
 

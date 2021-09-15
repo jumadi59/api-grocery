@@ -20,60 +20,44 @@ class Orders extends BaseModel
 
     public function orders($uid, array $filters)
     {
-        $date = '';
-        $join = '';
-        if (!empty($filters['status'])) {
-            if ($filters['status'] == 'pending') {
-                $date = 'b.expired_at as transaction-expired_at,';
-            } elseif ($filters['status'] == 'canceled') {
-                $join = " AND (b.status='cancel' OR b.status='expire')";
-            } else {
-                $date = 'a.expired_at,';
-            }
-        }
         $this->builder()->select('
-        a.id, a.resi, a.status, a.invoice, a.courier, a.transaction_id, ' . $date . '
+        a.id, a.resi, a.status, a.invoice, a.courier, a.transaction_id,
         b.status as transaction_status
         ')->from('orders a')
-            ->join('transactions b', 'b.id=a.transaction_id' . $join, 'left');
+            ->join('transactions b', 'b.id=a.transaction_id', 'left');
         if (!empty($filters['status'])) {
-            if ($filters['status'] == 'pending') {
-                $this->builder->where(['b.user_id' => $uid, 'b.status' => 'pending']);
-            } else if ($filters['status'] == 'canceled') {
-                $this->builder->where([
-                    'b.user_id' => $uid,
-                ])->orWhereIn('a.status', ['canceled', 'expire', null]);
-            } else {
-                $this->builder->where([
-                    'b.user_id' => $uid,
-                    'b.status' => 'settlement',
-                    'a.status' => $filters['status']
-                ]);
-            }
+            $this->builder->where([
+                'b.user_id' => $uid,
+                'b.status' => 'settlement',
+                'a.status' => $filters['status']
+            ]);
         } else {
-            $this->builder->where('b.user_id', $uid);
+            $this->builder->where([
+                'b.user_id' => $uid, 
+                'b.status' => 'settlement']);
         }
         return $this->builder->groupBy('a.id')->orderBy('a.id', 'DESC')->get()->getResult($this->returnType);
     }
 
     public function count($uid, string $status = null)
     {
-
-        $wheres = [];
         $this->builder()->select('
         a.status, a.transaction_id,
         b.status as transaction_status, b.user_id,
         ')->from('orders a')
             ->join('transactions b', 'b.id=a.transaction_id', 'left')
             ->groupBy('a.id');
-        $wheres['b.user_id'] = $uid;
-        if ($status == 'pending') {
-            $wheres['b.status'] = $status;
-        } else {
-            $wheres['b.status'] = 'settlement';
-            $wheres['a.status'] = $status;
-        }
-        $this->builder->where($wheres);
+            if ($status) {
+                $this->builder->where([
+                    'b.user_id' => $uid,
+                    'b.status' => 'settlement',
+                    'a.status' => $status
+                ]);
+            } else {
+                $this->builder->where([
+                    'b.user_id' => $uid, 
+                    'b.status' => 'settlement']);
+            }
         $query = $this->builder->get()->getResultArray();
         return count($query);
     }

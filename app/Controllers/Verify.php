@@ -86,6 +86,7 @@ class Verify extends BaseResourceController
 
         $user = $userModel->getWhere($fields)->getRow();
         if ($user) {
+            $this->model->delete(['user_id' => $user->id]);
             $data = [];
             if ($verified) {
                 $fields['verified_' . $verified]  = true;

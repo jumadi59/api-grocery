@@ -162,19 +162,21 @@ class Couriers extends BaseResourceController
                             'destination'   => $destinationCity->id,
                             'weight'        => $weight
                         ]);
-                        foreach ($ongkir as $o) {
-                            $entity = new \App\Entities\Courier();
-                            $entity->setAttributes([
-                                'id'            => $courier->id,
-                                'name'          => $courier->simple_name,
-                                'service'       => $o->service,
-                                'icon'          => $courier->icon,
-                                'description'   => $o->description,
-                                'note'          => $o->cost[0]->note,
-                                'cost'          => $o->cost[0]->value,
-                                'etd'           => $this->parseEtd($o->cost[0]->etd)
-                            ]);
-                            array_push($couriers, $entity);
+                        if(is_array($ongkir)) {
+                            foreach ($ongkir as $o) {
+                                $entity = new \App\Entities\Courier();
+                                $entity->setAttributes([
+                                    'id'            => $courier->id,
+                                    'name'          => $courier->simple_name,
+                                    'service'       => $o->service,
+                                    'icon'          => $courier->icon,
+                                    'description'   => $o->description,
+                                    'note'          => $o->cost[0]->note,
+                                    'cost'          => $o->cost[0]->value,
+                                    'etd'           => $this->parseEtd($o->cost[0]->etd)
+                                ]);
+                                array_push($couriers, $entity);
+                            }
                         }
                     }
                 }
