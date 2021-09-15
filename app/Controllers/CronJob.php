@@ -16,36 +16,49 @@ class cronJob extends BaseResourceController
 
     public function verify()
     {
-        $model = new \App\Models\Verify();
+        $model      = new \App\Models\Verify();
         $results    = $model->findAll();
         $now        = strtotime(date('Y-m-d H:i:s'));
+        $deletes    = [];
+
         foreach ($results as $key => $value) {
             $expired = strtotime($value['expired_at']);
             if ($expired < $now) {
-                $model->delete($value['id']);
+                array_push($value['id']);
             }
+        }
+
+        if (count($deletes) > 0) {
+            $model->delete($deletes);
         }
     }
 
     
     public function transactions()
     {
-        $model = new \App\Models\Transactions();
-        $orders = $model->jobs();
+        $model      = new \App\Models\Transactions();
+        $orders     = $model->jobs();
+        $updates    = [];
+
         foreach ($orders as $value) {
             $day = strtotime(date('Y-m-d H:i:s'));
             $expiryDate = strtotime(date($value['expired_at']));
             if ($expiryDate < $day && $value['status'] === 'pending') {
-                $model->update($value['id'], ['status' => 'expire']);
+                array_push($updates, ['id' => $value['id'], 'status' => 'expire']);
             }
+        }
+
+        if (count($updates) > 0) {
+            $model->updateBatch($updates, 'id');
         }
     }
 
     
     public function orders()
     {
-        $model = new \App\Models\Orders();
-        $orders = $model->jobs();
+        $model      = new \App\Models\Orders();
+        $orders     = $model->jobs();
+        
         foreach ($orders as $value) {
             $day = strtotime(date('Y-m-d H:i:s'));
             $expiryDate = strtotime(date($value['expired_at']));
