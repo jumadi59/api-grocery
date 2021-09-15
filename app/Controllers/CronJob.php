@@ -17,8 +17,6 @@ class cronJob extends BaseResourceController
         $this->verify();
         $this->transactions();
         $this->orders();
-        
-        return "";
     }
 
     public function verify()

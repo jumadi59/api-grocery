@@ -73,9 +73,7 @@ class Cors implements FilterInterface
       }
     }
     $jobs = new cronJob();
-    $jobs->verify();
-    $jobs->transactions();
-    $jobs->orders();
+    $jobs->index();
     
     return null;
   }
