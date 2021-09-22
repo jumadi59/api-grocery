@@ -108,6 +108,7 @@ class Transactions extends BaseResourceController
                     $this->model->update($id, ['status' => 'cancel']);
                     return $this->respond([
                         'status'   => 200,
+                        'data'      => (int) $id,
                         'message' =>  'Success cancel'
                     ]);
                 } else {
