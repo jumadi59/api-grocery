@@ -98,7 +98,7 @@ class Orders extends BaseResourceController
         if ($timeExpired) {
             $time->modify('+' . $timeExpired['expiry_duration'] . ' ' . $timeExpired['unit']);
         } else {
-            $time->modify('+1 minute');
+            $time->modify('+5 minute');
         }
         $result = $transcationModel->inserts([
             'user_id'       => $user->id,
@@ -112,7 +112,7 @@ class Orders extends BaseResourceController
         if ($result) {
             $transaction = $transcationModel->transaction($result);
             $response = Midtrans::checkout($transaction, $timeExpired);
-            if ($response) {
+            if ($response && is_array($response)) {
                 $orderProggress->claerCoupon();
                 $transaction->setMidtrans($response);
                 $transaction->description  = "Dicek dalam 5 menit setelah pembayaran berhasil";
@@ -123,10 +123,10 @@ class Orders extends BaseResourceController
                     'message'   => 'Data Saved'
                 ], 'Data Saved');
             } else {
-                $transaction->delete($result);
+                $transcationModel->delete($result);
                 return $this->respond([
                     'status' => 406,
-                    'message' => 'error create order'
+                    'message' => 'error create order response = '.$response
                 ], 406);
             }
         } else {

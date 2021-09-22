@@ -70,6 +70,7 @@ class Midtrans
                 $response = self::credit_card($data);
                 break;
             case 'e-wallet':
+                unset($data['custom_expiry']);
                 $response = self::e_walet($data);
                 break;
             case 'cstore':
@@ -147,7 +148,7 @@ class Midtrans
             'payment_type'          => $data['payment']->code,
             'transaction_details'   => $data['transaction_details'],
             'customer_details'      => $data['customer_details'],
-            'custom_expiry'         => $data['custom_expiry'],
+            //'custom_expiry'         => $data['custom_expiry'],
             $data['payment']->code  => array(
                 'description' => 'Pembelian Barang'
             )
@@ -194,7 +195,7 @@ class Midtrans
             'payment_type'          => $data['payment']->code,
             'transaction_details'   => $data['transaction_details'],
             'customer_details'      => $data['customer_details'],
-            'custom_expiry'         => $data['custom_expiry'],
+            //'custom_expiry'         => $data['custom_expiry'],
             //$data['payment']->code  => array(
             //    'enable_callback'   => true,
             //    'callback_url'      => 'someapps://callback'
@@ -256,6 +257,9 @@ class Midtrans
 
     private static function status($response)
     {
+        if ($response) {
+            # code...
+        }
         return self::status_payment($response);
     }
 
@@ -281,8 +285,15 @@ class Midtrans
             case 'gopay':
                 if (isset($response->actions)) {
                     $data['qr_code_url']          = $response->actions[0]->url;
-                    $data['deep_link']            = $response->actions[1]->url;
-                    $data['cancel_link']          = $response->actions[3]->url;
+                    if (isset($response->actions[1])) {
+                        $data['deep_link']            = $response->actions[1]->url;
+                    }
+                    if (isset($response->actions[2])) {
+                        $data['status_link']            = $response->actions[2]->url;
+                    }
+                    if (isset($response->actions[3])) {
+                        $data['cancel_link']          = $response->actions[3]->url;
+                    }
                 }
                 break;
             case 'cstore':
@@ -320,7 +331,7 @@ class Midtrans
                 break;
             case 'e-wallet':
                 $data = array(
-                    "expiry_duration" => 10,
+                    "expiry_duration" => 5,
                     "unit" => "minute"
                 );
                 break;

@@ -104,7 +104,7 @@ class Transactions extends BaseResourceController
                 Config::$isProduction = Setting::isProduction();
                 Config::$serverKey = Setting::getApiKeyMidtransServer();
                 $result = $transaction->cancel($id);
-                if ($result == 200) {
+                if ($result) {
                     $this->model->update($id, ['status' => 'cancel']);
                     return $this->respond([
                         'status'   => 200,
