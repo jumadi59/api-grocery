@@ -22,7 +22,6 @@ class OrderProgress
     private $request = array();
 
     private $user;
-    private $carts = array();
     private $stores = array();
 
     public function __construct($user, $countOrder)
@@ -111,7 +110,6 @@ class OrderProgress
                             $subtotal += ($discount == 0 ? $price : ($price - ($price * $discount / 100))) * $item['quantity'];
                             $item['note'] = isset($v['note']) ? $v['note'] : '';
                             array_push($carts, $item);
-                            if (isset($v['id'])): array_push($this->carts, $v['id']); endif;
                         } else {
                             $this->errors['cart'] = 'cart not found';
                         }
@@ -159,6 +157,7 @@ class OrderProgress
     {
         $cart = $this->models['carts']->cart($cid);
         if ($cart) {
+            $this->models['carts']->delete($cid);
             return [
                 'product_id'    => $cart->product->id,
                 'order_id'      => 0,
@@ -231,11 +230,8 @@ class OrderProgress
         return '';
     }
 
-    public function claerCarts()
+    public function claerCoupon()
     {
-        foreach ($this->carts as $value) {
-            $this->models['carts']->delete($value);
-        }
         if (isset($this->data['coupon_id'])) {
             $voucherClaimModel = new CouponClaims();
             $voucherClaimModel->update(['coupon_id' => $this->data['coupon_id'], 'user_id' => $this->user->id], ['is_used' => true]);

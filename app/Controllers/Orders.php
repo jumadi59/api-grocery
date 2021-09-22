@@ -113,7 +113,7 @@ class Orders extends BaseResourceController
             $transaction = $transcationModel->transaction($result);
             $response = Midtrans::checkout($transaction, $timeExpired);
             if ($response) {
-                $orderProggress->claerCarts();
+                $orderProggress->claerCoupon();
                 $transaction->setMidtrans($response);
                 $transaction->description  = "Dicek dalam 5 menit setelah pembayaran berhasil";
                 $transaction->instructions = $this->intructions($transaction->payment->code);
