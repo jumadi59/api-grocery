@@ -8,7 +8,7 @@ use App\Libraries\Token;
 use App\Models\Users;
 use CodeIgniter\I18n\Time;
 
-class cronJob extends BaseResourceController
+class CronJob extends BaseResourceController
 {
 
     protected $format    = 'json';

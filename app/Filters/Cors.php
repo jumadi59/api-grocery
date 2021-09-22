@@ -2,7 +2,7 @@
 
 namespace App\Filters;
 
-use App\Controllers\cronJob;
+use App\Controllers\CronJob;
 use App\Libraries\Setting;
 use App\Libraries\Token;
 use CodeIgniter\Filters\FilterInterface;
