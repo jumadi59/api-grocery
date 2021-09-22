@@ -294,6 +294,7 @@ class Midtrans
                 $data['redirect_url']       = $response->redirect_url;
                 break;
             default:
+                $data['merchant_id']        = $response->merchant_id;
                 if ($response->payment_type = 'bca_klikpay') {
                     $data['type']           = $response->payment_type;
                     $data['redirect_url']   = $response->redirect_url;
