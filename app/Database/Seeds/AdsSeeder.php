@@ -53,7 +53,7 @@ class AdsSeeder extends \CodeIgniter\Database\Seeder
             ],
             [
                 'title' => '',
-                'image' => 'banner_dialog.jpg',
+                'image' => 'banner_dialog.png',
                 'is_activated' => 1,
                 'ads' => 'store',
                 'type' => 'dialog',
