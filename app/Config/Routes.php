@@ -338,6 +338,7 @@ $routes->group('verify', function ($routes) {
 $routes->group('sanbox', function ($routes) {
 	$routes->get('/',             			'Sanbox::index');
 	$routes->get('generate/flash_sale',     'Sanbox::updateFlashSale');
+	$routes->get('generate/new_product',     'Sanbox::createNewProduct');
 });
 
 $routes->group('jobs', function ($routes) {

@@ -78,6 +78,29 @@ class Sanbox extends BaseResourceController
         return $this->respond(['update size' => count($updates)]);
     }
 
+    public function createNewProduct() {
+        $productModel = new \App\Models\Products();
+        $products = $productModel->findAll();
+        $time = new Time();
+        $time->modify('-7 day');
+
+        $updateProducts = [];
+        foreach ($products as $value) {
+            $rand = random_int(0, count($products));
+            if ($value->created_at->date < $time->toDateTimeString() && $rand === $value->id) {
+                array_push($updateProducts, [
+                    'id' => $value->id,
+                    'created_at' => date('Y-m-d H:i:s')
+                ]);
+            }
+        }
+
+        if (count($updateProducts) > 0) {
+            $productModel->updateBatch($updateProducts, 'id');
+        }
+        return $this->respond(['update size' => count($updateProducts)]);
+    }
+
     function all()
     {
         $this->index();
