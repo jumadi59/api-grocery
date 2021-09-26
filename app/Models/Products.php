@@ -213,16 +213,12 @@ class Products extends Model
     {
         helper('array_helper');
         if (isset($filters['sort']) && !empty($filters['sort'])) {
-            if ($filters['sort'] === 'most_suitable') {
-                $this->builder->orderBy('a.name', 'asc', true);
+            $ex = explode('.', $filters['sort']);
+            $isAlias = dot_array_search($ex[0], $this->aliasName);
+            if ($isAlias && count($ex) === 3) {
+                $this->builder->orderBy($this->aliasName[$ex[0]] . '.' . $ex[1], $ex[2]);
             } else {
-                $ex = explode('.', $filters['sort']);
-                $isAlias = dot_array_search($ex[0], $this->aliasName);
-                if ($isAlias && count($ex) === 3) {
-                    $this->builder->orderBy($this->aliasName[$ex[0]] . '.' . $ex[1], $ex[2]);
-                } else {
-                    $this->builder->orderBy('a.' . $ex[0], $ex[1]);
-                }
+                $this->builder->orderBy('a.' . $ex[0], $ex[1]);
             }
         }
         return $this;
