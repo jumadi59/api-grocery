@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Variants;
+use CodeIgniter\I18n\Time;
 
 class Products extends Discover
 {
@@ -27,7 +28,7 @@ class Products extends Discover
                 return $this->recommend();
                 break;
             case 'history':
-                return $this->recommend();
+                return $this->history();
                 break;
             default:
                 break;
@@ -54,16 +55,6 @@ class Products extends Discover
             $userId = $user->id;
         } else {
             $userId = null;
-        }
-        if (!$filters['parent_category'] && $filters['category']) {
-            $categoryModel = new \App\Models\Categories();
-            $catagory = $categoryModel->category($filters['category']);
-            if ($catagory) {
-                if (!isset($catagory->parent)) {
-                    $filters['parent_category'] = $catagory->id;
-                    unset($filters['category']);
-                }
-            }
         }
 
         $data = !is_null($query) ? $this->model->search(trim($query), $limit, $offset, $filters, $userId) : $this->model->products($limit, $offset, $filters, $userId);
@@ -109,6 +100,39 @@ class Products extends Discover
             'long'                  => $this->request->getGet('long'),
             'product.is_activated'  => $this->request->getGet('is_active') == 'false' ? false : true
         ];
+        
+        switch ($this->request->getGet('get')) {
+            case 'flash_sale':
+                $discountModel = new \App\Models\Discounts();
+                $flashSale = $discountModel->timeFlashSale();
+                foreach ($flashSale as $value) {
+                    if (isValid($value['valid_at'], $value['expired_at'])) {
+                        $filters['discount.valid_at']        = $value['valid_at'];
+                        $filters['discount.expired_at']      = $value['expired_at'];
+                    }
+                }
+                break;
+            case 'new':
+                $time = new Time();
+                $time->modify('-7 day');
+                $filters['product.created_at >=']  = $time->toDateTimeString();
+                break;
+            case 'sold':
+                break;
+            case 'recommend':
+                $history = $this->request->getGet('history');
+                if (!$history) {
+                    return $this->respondNoContent("Empty data");
+                }
+                $filters['find'] = explode(',', $history);
+                break;
+            case 'history':
+                //$filters['find'] = explode(',', $history);
+                break;
+            default:
+                break;
+        }
+
         return $this->respond([
             'status'   => 200,
             'data'     => $this->model->count($query, $filters),
