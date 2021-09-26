@@ -3,6 +3,9 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseResourceController;
+use App\Libraries\Firebase;
+use App\Models\Orders;
+use App\Models\Users;
 use CodeIgniter\I18n\Time;
 
 class Sanbox extends BaseResourceController
@@ -20,7 +23,12 @@ class Sanbox extends BaseResourceController
         $updateDiscounts = [];
         foreach ($products as $value) {
             $rand = random_int(0, count($products));
-            if ($value->stock > 0 && $rand === $value->id) {
+            if ($value->sold > 100000) {
+                array_push($updateProducts, [
+                    'id' => $value->id,
+                    'sold' => 0
+                ]);
+            } else if ($value->stock > 0 && $rand === $value->id) {
                 array_push($updateProducts, [
                     'id' => $value->id,
                     'stock' => ($value->stock - 1),
@@ -30,8 +38,8 @@ class Sanbox extends BaseResourceController
                 if ($discount) {
                     if ($discount->stock > 0) {
                         array_push($updateDiscounts, [
-                            'id' => $discount->id, 
-                            'stock' => ($discount->stock -1), 
+                            'id' => $discount->id,
+                            'stock' => ($discount->stock - 1),
                             'sold' => ($discount->sold + 1)
                         ]);
                     }
@@ -53,7 +61,8 @@ class Sanbox extends BaseResourceController
         return $this->respond(['update size' => count($updateProducts)]);
     }
 
-    function updateFlashSale() {
+    function updateFlashSale()
+    {
         $time         = new Time();
         $discontModel = new \App\Models\Discounts();
         $discounts    = $discontModel->where(['expired_at <' => $time->toDateTimeString()])->getResult();
@@ -78,7 +87,8 @@ class Sanbox extends BaseResourceController
         return $this->respond(['update size' => count($updates)]);
     }
 
-    public function createNewProduct() {
+    public function createNewProduct()
+    {
         $productModel = new \App\Models\Products();
         $products = $productModel->findAll();
         $time = new Time();
@@ -105,5 +115,99 @@ class Sanbox extends BaseResourceController
     {
         $this->index();
         $this->updateFlashSale();
+        $this->bootFlowOrder();
+    }
+
+    public function bootFlowOrder()
+    {
+
+        helper('text');
+        $orderModel = new Orders();
+        $orders = $orderModel->jobs();
+
+        $updateOrders = [];
+
+        foreach ($orders as $value) {
+            $day = strtotime(date('Y-m-d H:i:s'));
+            $expiryDate = strtotime(date($value['expired_at']));
+            if (
+                $value['transaction_status'] === 'settlement' &&
+                $value['status'] == 'confirmation' &&
+                $expiryDate < $day
+            ) {
+                array_push($updateOrders, array('id' => $value['id'], 'status' => 'expire'));
+                $this->send($value['user_id'], array(
+                    'title' => 'Pesanan di batalkan',
+                    'message' => 'Pesanan dibatalkan karenah telah lewat bats konfirmasi',
+                    'action' => 'order',
+                    'payload' => [
+                        'id' => (int) $value['id'],
+                        'status' => 'expired'
+                    ]
+                ));
+            } else if (
+                $value['transaction_status'] === 'settlement' &&
+                $value['status'] == 'confirmation' &&
+                $expiryDate > $day
+            ) {
+                array_push($updateOrders, array('id' => $value['id'], 'status' => 'packed'));
+                $this->send($value['user_id'], array(
+                    'title' => 'Pesanan lagi dikemas',
+                    'message' => 'Pesanan lagi di kemas',
+                    'action' => 'order',
+                    'payload' => [
+                        'id' => (int) $value['id'],
+                        'status' => 'packed'
+                    ]
+                ));
+            } else if (
+                $value['transaction_status'] === 'settlement' &&
+                $value['status'] == 'packed' &&
+                $expiryDate > $day
+            ) {
+                array_push($updateOrders, array(
+                    'id' => $value['id'],
+                    'status' => 'sent', 
+                    'resi' => random_string('alnum', 15)));
+                $courier = json_decode($value['courier']);
+                $this->send($value['user_id'], array(
+                    'title' => 'Pesanan telah dikirm',
+                    'message' => 'Pesanan anda telah dikirim melalui '. $courier->name,
+                    'action' => 'order',
+                    'payload' => [
+                        'id' => (int) $value['id'],
+                        'status' => 'sent'
+                    ]
+                ));
+            }
+        }
+
+        if (count($updateOrders) > 0) {
+            $orderModel->updateBatch($updateOrders, 'id');
+        }
+    }
+
+    public function send($uid, $data)
+    {
+
+        $userModel = new Users();
+        $deviceToken = $userModel->last_login($uid)->device_token;
+
+        $notif['title']         = $data['title'];
+        $notif['message']       = $data['message'];
+        $notif['is_background'] = false;
+        $notif['timestamp'] =  (isset($data['timestamp']) && !empty($data['timestamp'])) ? (int) $data['timestamp'] : time();
+        if (isset($data['image']) && !empty($data['image'])) :       $notif['image'] = $data['image'];
+        endif;
+        if (isset($data['action']) && !empty($data['action'])) :     $notif['action'] = $data['action'];
+        endif;
+        if (isset($data['payload']) && !empty($data['payload'])) :   $notif['payload'] = $data['payload'];
+        endif;
+
+        if (is_array($deviceToken)) {
+            return Firebase::sendMultiple($deviceToken, $notif);
+        } else {
+            return Firebase::send($deviceToken, $notif);
+        }
     }
 }
