@@ -153,8 +153,8 @@ class Orders extends BaseModel
     public function jobs()
     {
         return $this->builder()->select('
-        a.id, a.status, a.expired_at,
-        a.transaction_id, b.status as transaction_status
+        a.id, a.status, a.expired_at, a.courier,
+        a.transaction_id, b.status as transaction_status, b.user_id
         ')->from('orders a')
             ->join('transactions b', 'b.id=a.transaction_id', 'left')
             ->groupBy('a.id')->get()->getResultArray();
