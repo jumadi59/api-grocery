@@ -110,6 +110,7 @@ class Discover extends BaseResourceController
         $this->filters  = [
             'sort'                  => $this->request->getGet('sort'),
             'category'              => $this->request->getGet('category'),
+            'parent_category'       => $this->request->getGet('parent_category'),
             'store'                 => $this->request->getGet('store'),
             'product.price >='      => $this->request->getGet('min_price'),
             'product.price <='      => $this->request->getGet('max_price'),
